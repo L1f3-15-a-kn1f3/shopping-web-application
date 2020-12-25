@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const index = new Vuex.Store({
   state: {
 
   },
@@ -14,3 +14,5 @@ export default new Vuex.Store({
 
   }
 })
+
+export default index
