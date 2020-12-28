@@ -1,6 +1,6 @@
 <template>
   <swiper>
-    <swiper-item v-for="item in banners">
+    <swiper-item v-for="(item,index) in banners" :key="index">
       <a :href='item.link'>
         <img :src='item.image' alt="">
       </a>
@@ -10,7 +10,6 @@
 
 <script>
 import {Swiper,SwiperItem} from '@/components/common/swiper'
-import {getHomeMultiData} from "@/network/home";
 
 export default {
   name: "MainBanner",
@@ -18,21 +17,19 @@ export default {
     Swiper,
     SwiperItem
   },
-  data() {
-    return {
-      banners:[],
-      recommends:[]
+  props:{
+    banners:{
+      type:Array,
+      default() {
+        return [];
+      }
     }
   },
-  created() {
-    getHomeMultiData()
-        .then(res => {
-          console.log(res.data)
-          this.banners = res.data.banner.list
-          this.recommends = res.data.recommend.list
-          console.log(this.banners);
-        })
-  }
+  data() {
+    return {
+    }
+  },
+
 }
 </script>
 
