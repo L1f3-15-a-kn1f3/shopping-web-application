@@ -1,14 +1,15 @@
 <template>
   <div class="home">
     <nav-bar class="home-nav">
-      <div slot="center">邵梦洁的衣柜</div>
+      <div slot="center">Fucky Mall</div>
     </nav-bar>
     <home-swiper :banners = banners></home-swiper>
     <recommend-view :commends = recommends></recommend-view>
     <feature-view></feature-view>
-    <tab-control :titles="titles" class="tab-ctrl"/>
-    <goods-list class="goods-list" :goods="goods['pop'].list"></goods-list>
-
+    <tab-control :titles="titles" class="tab-ctrl" @tabClick = "tabClick"/>
+    <better-scroll>
+      <goods-list class="goods-list" :goods="goods[currentType].list"></goods-list>
+    </better-scroll>
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import RecommendView from "@/views/home/childrenComponents/RecommendView";
 import FeatureView from "@/views/home/childrenComponents/FeatureView";
 import TabControl from "@/components/content/tabcontrol/TabControl";
 import GoodsList from "@/components/content/goods/GoodsList";
+import BetterScroll from "@/components/common/scroll/Scroll"
 
 import {getHomeMultiData,getHomeGoods} from "@/network/home";
 
@@ -32,6 +34,7 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
+    BetterScroll
   },
   data(){
     return {
@@ -42,7 +45,8 @@ export default {
         'pop':{page:0, list:[]},
         'new':{page:0, list:[]},
         'sell':{page:0, list:[]}
-      }
+      },
+      currentType:'pop'
     }
   },
   created() {
@@ -55,6 +59,12 @@ export default {
     this.getHomeGoods('sell')
   },
   methods:{
+
+    /*
+     *
+     *网络请求相关
+     *
+     */
     getHomeMultiData(){
       getHomeMultiData()
       .then(res => {
@@ -72,6 +82,32 @@ export default {
         this.goods[type].list.page += 1
         console.log(this.goods[type])
       })
+    },
+    /*
+    *
+    * 事件相关方法
+    *
+    * */
+    tabClick( index ){
+      if( index === 0 ){
+        this.currentType = 'pop'
+      }else if( index === 1 ){
+        this.currentType = 'new'
+      }else if( index === 2 ){
+        this.currentType = 'sell'
+      }else {
+        this.currentType = 'pop'
+      }
+      // switch (index){
+      //   case 1:
+      //     this.currentType = 'pop'
+      //     break
+      //   case 2:
+      //     this.currentType = 'new'
+      //     break
+      //   case 3:
+      //     this.currentType = 'sell'
+      // }
     }
   }
 
